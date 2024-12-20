@@ -2,7 +2,10 @@ import os
 from crewai import Crew
 from textwrap import dedent
 from agents import RecommendationAgents
-from tasks import CustomTasks
+from tasks import RecommendationTasks
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class VideoCrew:
@@ -10,16 +13,16 @@ class VideoCrew:
         self.topic = topic
 
     def run(self):
-        # Define your custom agents and tasks in agents.py and tasks.py
+        # Initialize custom agents and tasks
         agents = RecommendationAgents()
-        tasks = CustomTasks()
+        tasks = RecommendationTasks()
 
-        # Define your custom agents and tasks here
+        # Define custom agents
         expert_tutorial_agent = agents.expert_tutorial_agent()
         tutorial_selection_expert = agents.tutorial_selection_expert()
         tutorial_description_expert = agents.tutorial_description_expert()
 
-        # Custom tasks include agent name and variables as input
+        # Define custom tasks
         plan_video = tasks.plan_video(
             expert_tutorial_agent,
             self.topic,
@@ -35,7 +38,7 @@ class VideoCrew:
             self.topic,
         )
 
-        # Define your custom crew here
+        # Define the crew
         crew = Crew(
             agents=[expert_tutorial_agent, tutorial_selection_expert, tutorial_description_expert],
             tasks=[plan_video, evaluate_video_quality, create_learning_plan],
@@ -46,20 +49,25 @@ class VideoCrew:
         return result
 
 
-# This is the main function that you will use to run your custom crew.
+# Main entry point
 if __name__ == "__main__":
-    print("## Welcome to Tutorial video recommender: ")
-    print("-------------------------------")
+    print(f"API Key present: {'OPENAI_API_KEY' in os.environ}")
+    print("## Welcome to Tutorial Video Recommender!")
+    print("----------------------------------------")
     
     topic = input(
-        dedent("""
-            What do you want to lern
+        dedent("""\
+            What do you want to learn?
         """)
-    )
+    ).strip()
 
-    custom_crew = VideoCrew(var1, var2)
-    result = custom_crew.run()
-    print("\n\n########################")
-    print("## Here is your video recommendations:")
-    print("########################\n")
-    print(result)
+    if not topic:
+        print("Please enter a valid topic.")
+    else:
+        video_crew = VideoCrew(topic)  # Avoid shadowing the class name
+        result = video_crew.run()
+        
+        print("\n\n########################")
+        print("## Here are your video recommendations:")
+        print("########################\n")
+        print(result)
