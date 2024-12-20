@@ -34,7 +34,7 @@ class RecommendationAgents:
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
-            llm=self.OpenAIGPT35,
+            llm=self.OpenAIGPT4,
         )
 
     def tutorial_selection_expert(self):
@@ -53,7 +53,7 @@ class RecommendationAgents:
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
-            llm=self.OpenAIGPT35,
+            llm=self.OpenAIGPT4,
         )
     
     def tutorial_description_expert(self):
@@ -72,5 +72,5 @@ class RecommendationAgents:
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
-            llm=self.OpenAIGPT35,
+            llm=self.OpenAIGPT4,
         )
